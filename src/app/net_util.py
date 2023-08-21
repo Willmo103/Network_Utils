@@ -2,8 +2,8 @@
 # File: net_util.py
 # Module: app
 
-import json
-import os
+import json, logging, os
+from ping3 import ping
 
 class ConfigError(Exception):
     """An exception to be raised when there is an error with the config file"""
@@ -84,9 +84,9 @@ class NetUtil:
         return cls(data["ip_list"])
 
     def run_ping_ips(self):
-        """Ping all the ip addresses in the ip address list
-        log the results to a file
-        """
+        """Ping all the ip addresses in the ip address list and log the results."""
         for ip in self.ip_list:
-            os.system(f"ping {ip} >> ping.log")
-
+            if ping(ip) is None:  # i.e., the host is unreachable
+                logging.error(f"{ip} is unreachable.")
+            else:
+                logging.info(f"{ip} is reachable.")
