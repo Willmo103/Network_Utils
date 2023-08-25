@@ -1,9 +1,10 @@
 # Filepath: \app\net_util.py
 # File: net_util.py
 # Module: app
-
+import config
 import json, logging, os
 from ping3 import ping
+
 
 class ConfigError(Exception):
     """An exception to be raised when there is an error with the config file"""
@@ -88,5 +89,13 @@ class NetUtil:
         for ip in self.ip_list:
             if ping(ip) is None:  # i.e., the host is unreachable
                 logging.error(f"{ip} is unreachable.")
+                print(f"{ip} is unreachable.")
             else:
                 logging.info(f"{ip} is reachable.")
+                print(f"{ip} is reachable.")
+
+if __name__ == "__main__":
+    net_util = NetUtil()
+    print(net_util.path)
+    print(net_util.ip_list)
+    net_util.run_ping_ips()
